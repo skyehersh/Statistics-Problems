@@ -1,0 +1,159 @@
+\documentclass[11pt, oneside]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt} 
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[margin=1in]{geometry} 
+\usepackage{enumitem}
+\usepackage{hhline}
+
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+  
+\usepackage{sectsty}
+\sectionfont{\fontsize{12}{15}\selectfont}
+
+\title{Directed Graphical Models}
+\author{Skye Hersh \\ Modern Computational Statistics}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+\section*{Bishop, Chapter 8}
+\subsection*{8.3}
+Consider three binary variables $a, b, c\ \epsilon\ \{0, 1\}$ having the joint distribution given in the table below. Show by direct evaluation that this distribution has the property that $a$ and $b$ are marginally dependent, so that $p(a, b) ≠ p(a)p(b)$, but that they become independent when conditioned on $c$, so that $p(a, b|c) = p(a|c)p(b|c)$ for both $c = 0$ and $c = 1$.
+
+  \begin{table}[h!]
+  \centering
+  \begin{tabular}{ |c|c|c|c| }
+  \hline
+  $a$ & $b$ & $c$ & $p(a, b, c)$ \\
+  \hline
+  0 & 0 & 0 & .192 \\
+  0 & 0 & 1 & .144 \\
+  0 & 1 & 0 & .048 \\ 
+  0 & 1 & 1 & .216 \\
+  1 & 0 & 0 & .192 \\
+  1 & 0 & 1 & .064 \\
+  1 & 1 & 0 & .048 \\
+  1 & 1 & 1 & .096 \\
+  \hline
+  \end{tabular}
+  \end{table}
+
+\begin{solution}\mbox{} \newline
+
+We can decompose the discrete distribution $p(a, b)$ into four respective probabilities for the four combinations that the variables $a$ and $b$ can take on: that for when $(a=0, b=0)$; $(a=0, b=1)$; $(a=1, b=0)$; and when $(a=1, b=1)$. 
+
+As $a$ and $b$ are Bernoulli random variables, we can begin by finding the marginal probabilities for either possible outcome for either variable by itself, summing over the rows in the table wherein such outcome's condition is met, e.g., $$ p(a=0) = \sum_b \sum_c p(a=0, b, c). $$
+
+Thus, we find that 
+
+  \begin{align}
+  p(a=0) &= 0.192 + 0.144 + 0.048 + 0.216 \\
+  &= 0.600.
+  \end{align}
+
+According to the same principle, we have
+
+$$ p(a=1) = 0.400 $$
+$$ p(b=0) = 0.592 $$
+$$ p(b=1) = 0.408. $$
+
+(Sensibly, $p(a=0) + p(a=1) = p(b=0) + p(b=1) = 1.$) The joint probability distribution $ p(a, b) $ comprises four discrete probabilities — one for each combination of the variables' binary outcomes — wherein, for example, $$ p(a=0, b=0) = \sum_c p(a=0, b=0, c). $$
+
+From the table and the marginal probabilities worked out above, we have that
+
+  \begin{table}[h!]
+  \centering
+  \begin{tabular}{ |c|c|c|c| }
+  \hline
+  $a$ & $b$ & $p(a, b)$ & $p(a)p(b)$ \\ 
+  \hline
+  0 & 0 & $0.192 + 0.144 = 0.336$ & $0.6 × 0.592 = 0.3552$ \\
+  0 & 1 & $0.048 + 0.216 = 0.264$ & $0.6 × 0.408 = 0.2448$ \\
+  1 & 0 & $0.192 + 0.064 = 0.256$ & $0.4 × 0.592 = 0.2368$ \\
+  1 & 1 & $0.048 + 0.096 = 0.144$ & $0.4 × 0.408 = 0.1632$ \\
+  \hline
+  \end{tabular}
+  \end{table}
+
+Immediately, we see that in every case, $p(a, b) ≠ p(a)p(b),$ as $a$ and $b$ are marginally dependent. On the other hand, we find that they become independent when conditioned on $c$. We know that $$p(a|c) = \frac{p(a, c)}{p(c)},$$ $$p(b|c) = \frac{p(b, c)}{p(c)},$$ $$p(a, b|c) = \frac{p(a, b, c)}{p(c)}.$$ 
+
+Noting that $p(c=0) = 0.48$ and $p(c=1) = 0.52$, we can compute the marginal, conditional probabilities accordingly:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |c|c|c|c|c|c|c| }
+\hline
+$a$ & $b$ & $c$ & $p(a|c)$ & $p(b|c)$ & $p(a, b|c)$ & $p(a|c)p(b|c)$ \\
+\hline
+\rule{0pt}{3ex} 0 & 0 & 0 & $\frac{0.240}{0.480}=0.500$ & $\frac{0.384}{0.480}=0.800$ & $\frac{.192}{0.480} = 0.400$ & $0.500\times0.800= 0.400$ \\
+\rule{0pt}{3ex} 0 & 0 & 1 & $\frac{0.360}{0.520}\approx0.692$ & $\frac{0.208}{0.520}=0.400$ & $\frac{.144}{0.520}\approx 0.277$ & $0.692\times0.400\approx0.277$ \\
+\rule{0pt}{3ex} 0 & 1 & 0 & $\frac{0.240}{0.480} = 0.500$ & $\frac{0.096}{0.480} = 0.200$ & $\frac{.048}{0.480} = 0.100$ & $0.500\times0.200=0.100$ \\
+\rule{0pt}{3ex} 0 & 1 & 1 & $\frac{0.360}{0.520} \approx 0.692$ & $\frac{0.312}{0.520} = 0.600$ & $\frac{.216}{0.520} \approx 0.415$ & $0.692\times0.600=0.415$ \\
+\rule{0pt}{3ex} 1 & 0 & 0 & $\frac{0.240}{0.480} = 0.500$ & $\frac{0.384}{0.480} = 0.800$ & $\frac{.192}{0.480} = 0.400$ & $0.500\times0.800=0.400$ \\
+\rule{0pt}{3ex} 1 & 0 & 1 & $\frac{0.160}{0.520} \approx 0.307$ & $\frac{0.208}{0.520} = 0.400$ & $\frac{.064}{0.520} \approx 0.123$ & $0.307\times0.400\approx0.123$ \\
+\rule{0pt}{3ex} 1 & 1 & 0 & $\frac{0.240}{0.480} = 0.500$ & $\frac{0.096}{0.480} = 0.200$ & $\frac{.048}{0.480} = 0.100$ & $0.500\times0.200=0.100$ \\
+\rule{0pt}{3ex} 1 & 1 & 1 & $\frac{0.160}{0.520} \approx 0.308$ & $\frac{0.312}{0.520} = 0.600$ & $\frac{.096}{0.520} \approx 0.185$ & $0.308\times0.600\approx0.185$ \\
+\hline
+\end{tabular}
+\end{table}
+  
+The latter two columns show the equivalence between $p(a, b|c)$ and $p(a)p(b)$.
+
+
+
+\end{solution}
+
+
+\end{document}
